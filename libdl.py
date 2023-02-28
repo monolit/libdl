@@ -50,7 +50,6 @@ def download(url, path, recreate=False, quiet=False, filename=None, headers=None
                     # resume download from the last byte
                     headers["Range"] = f"bytes={local_bytes}-"
                     filemode = "ab"
-                    # filemode = 'wb'
                     pbar.update(local_bytes)
                     super_duper_logger(
                         f"Resuming download! {filename} from {round(local_bytes / 1024)}kb to {round(server_bytes / 1024)}kb",
@@ -153,8 +152,4 @@ if __name__ == "__main__":
     # pls_run_thrgh('http://speedtest.ftp.otenet.gr/files/test10Mb.db')
 
     pls_run_thrgh("http://localhost:8000/testfile1GB", path="testfile", recreate=True)
-    # download('http://localhost:8000/testfile1GB', path='testfile', recreate=True)
 
-    # pls_run_thrgh() # nothing, exit
-    # pls_run_thrgh('https://autopatchhk.yuanshen.com/client_app/update/hk4e_global/10/game_3.4.0_3.5.0_hdiff_rXYAZvelstu54E2c.zip')
-    # pls_run_thrgh('https://autopatchhk.yuanshen.com/client_app/update/hk4e_global/10/en-us_3.4.0_3.5.0_hdiff_bCHgs9NcSPI54hK3.zip')
