@@ -133,7 +133,7 @@ def pls_run_thrgh(smth=None, **kwargs):
                 attempts = 1
             break
         except requests.exceptions.ConnectionError as e:
-            sys.exit(f"ну всё, допинговался")
+            sys.exit("ну всё, допинговался")
         except Exception as error:
             traceback.print_exception(type(error), error, error.__traceback__, limit=1)
             # print(error)
