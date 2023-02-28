@@ -174,8 +174,7 @@ def pls_run_thrgh(smth=None, **kwargs):
             # print(error)
             attempts += 1
             # bruh why
-            if attempts < 0:
-                attempts = 0
+            attempts = max(attempts, 0)
 
         except KeyboardInterrupt:
             sys.exit("exiting, see ya")
@@ -187,4 +186,3 @@ if __name__ == "__main__":
     # pls_run_thrgh('http://speedtest.ftp.otenet.gr/files/test10Mb.db')
 
     pls_run_thrgh("http://localhost:8000/testfile1GB", path="testfile", recreate=True)
-
