@@ -1,4 +1,9 @@
-import requests, argparse, sys, tqdm, time, os
+import requests
+import argparse
+import sys
+import tqdm
+import time
+import os
 import datetime
 import traceback
 
@@ -126,4 +131,3 @@ if __name__ == "__main__":
     #pls_run_thrgh() # nothing, exit
     #pls_run_thrgh('https://autopatchhk.yuanshen.com/client_app/update/hk4e_global/10/game_3.4.0_3.5.0_hdiff_rXYAZvelstu54E2c.zip')
     #pls_run_thrgh('https://autopatchhk.yuanshen.com/client_app/update/hk4e_global/10/en-us_3.4.0_3.5.0_hdiff_bCHgs9NcSPI54hK3.zip')
- 
