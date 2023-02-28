@@ -26,7 +26,9 @@ def ensure_directory_exists(directory_path):
         print(f"Directory {directory_path} already exists")
 
 
-def download(url, path, recreate=False, quiet=False, filename=None, headers={}):
+def download(url, path, recreate=False, quiet=False, filename=None, headers=None):
+    if headers is None:
+        headers = {}
     ensure_directory_exists(path)
     if not filename:
         filename = url.split("/")[-1]
