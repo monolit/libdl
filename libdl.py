@@ -174,8 +174,7 @@ def pls_run_thrgh(smth=None, **kwargs):
             # print(error)
             attempts += 1
             # bruh why
-            if attempts < 0:
-                attempts = 0
+            attempts = max(attempts, 0)
 
         except KeyboardInterrupt:
             sys.exit("exiting, see ya")
