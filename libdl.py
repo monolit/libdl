@@ -186,4 +186,3 @@ if __name__ == "__main__":
     # pls_run_thrgh('http://speedtest.ftp.otenet.gr/files/test10Mb.db')
 
     pls_run_thrgh("http://localhost:8000/testfile1GB", path="testfile", recreate=True)
-
