@@ -19,6 +19,12 @@ def super_duper_logger(text: str, level: str):
 
 
 def ensure_directory_exists(directory_path):
+    """
+    Ensures that the specified directory exists. If it doesn't exist, creates it.
+
+    Args:
+        directory_path: The path of the directory to ensure existence of.
+    """
     if not os.path.exists(directory_path):
         os.makedirs(directory_path, exist_ok=True)
         print(f"Created directory {directory_path}")
@@ -27,6 +33,26 @@ def ensure_directory_exists(directory_path):
 
 
 def download(url, path, recreate=False, quiet=False, filename=None, headers=None):
+    """
+    Downloads a file from the given URL to the specified path.
+
+    :param url: The URL to download the file from.
+    :type url: str
+    :param path: The path to save the downloaded file to.
+    :type path: str
+    :param recreate: Whether to recreate the file if it already exists.
+    :type recreate: bool, optional
+    :param quiet: Whether to suppress output to the console.
+    :type quiet: bool, optional
+    :param filename: The name to save the downloaded file as. If not provided, the last part of the URL is used.
+    :type filename: str, optional
+    :param headers: Any additional headers to include in the request.
+    :type headers: dict, optional
+
+    :raises requests.exceptions.HTTPError: If the server returns an error status code.
+
+    :return: None
+    """
     if headers is None:
         headers = {}
     ensure_directory_exists(path)
@@ -111,6 +137,15 @@ def download(url, path, recreate=False, quiet=False, filename=None, headers=None
 
 
 def pls_run_thrgh(smth=None, **kwargs):
+    """
+    Executes a command in a subprocess and waits for it to complete. Raises an exception if the return code is non-zero.
+
+    Args:
+        command: A list containing the command and its arguments.
+
+    Raises:
+        subprocess.CalledProcessError: If the return code of the subprocess is non-zero.
+    """
     desc = "Simple command-line script to ..."
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument("url", nargs="*", default=[smth])
