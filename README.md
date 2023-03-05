@@ -1,5 +1,8 @@
 # libdl
 
+## Documentation
+
+Soon™
 
 ## Installation
 
@@ -11,11 +14,14 @@ or
 
 ## Usage
 
-
+in test*.py:
 ```python
-<!--START_SECTION:update-->
-<!--END_SECTION:update-->
+from libdl import pls_run_thrgh, download
+
+
+download(uri)
+# or
+pls_run_thrgh(uri, path="testfile", recreate=True)
+# or
+download(uri, filename="file", path='path')
 ```
-
-
-Note the `<!--START_SECTION:update-->` and `<!--END_SECTION:update-->` comments in the file. These are placeholders for the content that will be dynamically generated and inserted by the GitHub Actions workflow. When the workflow runs, it will replace everything between these two comments with the content of the `README_CONTENT.md` file.
