@@ -19,18 +19,11 @@ jobs:
       - name: Append content to README file
         run: cat README_CONTENT.md >> README.md
 
-      - name: Check repository status
-        run: |
-          git status
-
-      - name: Stage changes
-        run: |
-          git add README.md
-
       - name: Commit changes
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
+          git add README.md
           git commit -m "Update README file"
           git push
 
@@ -40,5 +33,5 @@ jobs:
           script: |
             const fs = require('fs');
             const content = fs.readFileSync('README.md', 'utf8');
-            const newContent = content.replace(/<!--START_SECTION:update-->[\s\S]*<!--END_SECTION:update-->/g, `<!--START_SECTION:update-->\n${fs.readFileSync('README_CONTENT.md', 'utf8')}\n<!--END_SECTION:update-->`);
+            const newContent = content.replace(/<!--START_SECTION:update-->[\s\S]*<!--END_SECTION:update-->/g, `<!--START_SECTION:update-->\n${fs.readFileSync('test_libdl.py', 'utf8')}\n<!--END_SECTION:update-->`);
             fs.writeFileSync('README.md', newContent);
