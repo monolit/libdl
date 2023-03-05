@@ -138,6 +138,8 @@ def download(url, path, recreate=False, quiet=False, filename=None, headers=None
 
 def pls_run_thrgh(smth=None, **kwargs):
     """
+    don't mind that so
+
     Executes a command in a subprocess and waits for it to complete. Raises an exception if the return code is non-zero.
 
     Args:
