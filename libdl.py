@@ -155,7 +155,7 @@ def pls_run_thrgh(smth=None, **kwargs):
     # hardcoded because fuck you
     max_attempts = 2
     attempts = 1
-    while attempts < max_attempts and attempts > 0:
+    while 0 < attempts < max_attempts:
         try:
             for url in args.url:
                 if url is not None:
