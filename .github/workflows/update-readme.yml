@@ -3,7 +3,7 @@ name: Update README
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   update-readme:
@@ -19,11 +19,18 @@ jobs:
       - name: Append content to README file
         run: cat README_CONTENT.md >> README.md
 
+      - name: Check repository status
+        run: |
+          git status
+
+      - name: Stage changes
+        run: |
+          git add README.md
+
       - name: Commit changes
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add README.md
           git commit -m "Update README file"
           git push
 
