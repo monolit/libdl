@@ -1,10 +1,13 @@
 import subprocess
 from setuptools import setup
-#from test_git import GetGitVersion as gv
+
+# from test_git import GetGitVersion as gv
 # Obtain the short Git commit hash
-commit_hash = subprocess.check_output(
-    ["git", "rev-parse", "--short", "HEAD"
-    ]).strip().decode("utf-8")
+commit_hash = (
+    subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+    .strip()
+    .decode("utf-8")
+)
 
 setup(
     name="libdl",
@@ -20,7 +23,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
     ],
-    py_modules=['libdl'],
+    py_modules=["libdl"],
     install_requires=[
         "requests",
         "tqdm",
