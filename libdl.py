@@ -12,6 +12,8 @@ CHUNK_SIZE = 1024 * 1024  # 1024KB
 AVERAGE_SPEED_WINDOW = 5  # window size to calculate average download speed in seconds
 
 # https://github.com/kiriharu/zerochan/blob/main/zerochan/__main__.py#L26
+
+
 def super_duper_logger(text: str, level: str):
     """This is my secret development, shh!"""
     print(f"[{datetime.datetime.now()}] [{level}]: {text}")
@@ -62,9 +64,7 @@ def download(url, path, recreate=False, quiet=False, filename=None, headers=None
         requests.head(url, timeout=7, headers=headers).headers["Content-Length"]
     )
 
-    with tqdm.tqdm(
-        total=server_bytes, unit="B", unit_scale=True, ncols=100
-    ) as pbar:
+    with tqdm.tqdm(total=server_bytes, unit="B", unit_scale=True, ncols=100) as pbar:
         pbar.set_description(f"Downloading {filename}")
         start_time = time.time()
         downloaded_size = 0
@@ -117,8 +117,7 @@ def download(url, path, recreate=False, quiet=False, filename=None, headers=None
                     else:
                         while (
                             avg_speeds
-                            and current_time - AVERAGE_SPEED_WINDOW
-                            > avg_speeds[0][1]
+                            and current_time - AVERAGE_SPEED_WINDOW > avg_speeds[0][1]
                         ):
                             avg_speeds.pop(0)
                         avg_speeds.append((download_speed, current_time))
@@ -128,9 +127,7 @@ def download(url, path, recreate=False, quiet=False, filename=None, headers=None
                             / len(avg_speeds)
                             / 1024
                         )
-                        pbar.set_postfix(
-                            {"avg_speed": "{:.2f} KB/s".format(avg_speed)}
-                        )
+                        pbar.set_postfix({"avg_speed": "{:.2f} KB/s".format(avg_speed)})
         super_duper_logger(f"Downloaded {filename} to {path}", "DOWNLOADER")
     return print()
 
@@ -148,7 +145,7 @@ def pls_run_thrgh(smth=None, **kwargs):
         "url",
         nargs="*",
         default=[smth],
-        help="may be string with spaces, e. g. url1 url2"
+        help="may be string with spaces, e. g. url1 url2",
     )
     args = parser.parse_args()
     # hardcoded because fuck you
