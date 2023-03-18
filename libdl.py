@@ -129,7 +129,7 @@ def download(url, path, recreate=False, quiet=False, filename=None, headers=None
                         )
                         pbar.set_postfix({"avg_speed": "{:.2f} KB/s".format(avg_speed)})
         super_duper_logger(f"Downloaded {filename} to {path}", "DOWNLOADER")
-    return print()
+    return filename
 
 
 def pls_run_thrgh(smth=None, **kwargs):
