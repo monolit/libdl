@@ -163,7 +163,7 @@ def pls_run_thrgh(smth=None, **kwargs):
                     else:
                         path = l
                         del kwargs["path"]
-                    download(url, path=path, quiet=False, **kwargs)
+                    download(url, path=path, **kwargs)
                 # future fails
                 attempts = 1
             break
