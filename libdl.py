@@ -52,7 +52,7 @@ def download(
 
     :raises requests.exceptions.HTTPError: If the server returns an error status code.
 
-    :return: None
+    :return: filename
     """
     if headers is None:
         headers = {}
@@ -85,7 +85,7 @@ def download(
                 filemode = "wb"
             else:
                 pbar.set_postfix({"status": "Skipping as already complete"})
-                return
+                return filename
         else:
             filemode = "wb"
         with requests.get(url, headers=headers, stream=True) as r:
