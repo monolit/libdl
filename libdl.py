@@ -34,7 +34,7 @@ def ensure_directory_exists(directory_path):
 
 
 def download(
-    url, path=os.getcwd(), recreate=False, quiet=False, filename=None, headers=None
+    url, path=os.getcwd(), recreate=False, _quiet=False, filename=None, headers=None
 ):
     """
     Downloads a file from the given URL to the specified path.
