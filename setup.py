@@ -11,7 +11,7 @@ commit_hash = (
 
 setup(
     name="libdl",
-    version="0.1+" + commit_hash,
+    version="1.1+" + commit_hash,
     description="library-download",
     url="https://github.com/monolit/libdl",
     author="monolit_01",
