@@ -61,7 +61,7 @@ def download(
         filename = unquote(url.split("?")[0].rstrip("/").split("/")[-1])
     filepath = os.path.join(path, filename)
     server_bytes = int(
-        requests.head(url, timeout=7, headers=headers).headers["Content-Length"]
+        requests.head(url, timeout=7, headers=headers).headers.get("Content-Length")
     )
 
     with tqdm.tqdm(total=server_bytes, unit="B", unit_scale=True, ncols=100) as pbar:
