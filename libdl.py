@@ -30,7 +30,8 @@ def ensure_directory_exists(directory_path):
         os.makedirs(directory_path, exist_ok=True)
         print(f"Created directory {directory_path}")
     else:
-        print(f"Directory {directory_path} already exists")
+        retutn
+        # print(f"Directory {directory_path} already exists")
 
 
 def download(
