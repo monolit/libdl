@@ -33,7 +33,7 @@ def ensure_directory_exists(directory_path):
         print(f"Directory {directory_path} already exists")
 
 
-def download(url, path='.', recreate=False, quiet=False, filename=None, headers=None):
+def download(url, path=os.getcwd(), recreate=False, quiet=False, filename=None, headers=None):
     """
     Downloads a file from the given URL to the specified path.
 
