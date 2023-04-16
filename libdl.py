@@ -32,15 +32,12 @@ def ensure_directory_exists(directory_path):
 
 
 def get_name(url):
-    name = url.rstrip('/')
-    for delimiter, index in [
-        ['/', -1], 
-        ['&', 0], 
-        ['?', 0]]:
+    name = url.rstrip("/")
+    for delimiter, index in [["/", -1], ["&", 0], ["?", 0]]:
         name = name.split(delimiter)[index]
     name = unquote(name)
-    for letter in ['/', '\\']:
-        name = name.replace(letter, '_')
+    for letter in ["/", "\\"]:
+        name = name.replace(letter, "_")
     return name
 
 
@@ -74,7 +71,8 @@ def download(
         filename = get_name(url)
     filepath = os.path.join(path, filename)
     server_bytes = int(
-        requests.head(url, timeout=7, headers=headers).headers.get("Content-Length")
+        requests.head(url, timeout=7, headers=headers).headers.get(
+            "Content-Length")
     )
 
     with tqdm.tqdm(total=server_bytes, unit="B", unit_scale=True, ncols=100) as pbar:
@@ -140,7 +138,8 @@ def download(
                             / len(avg_speeds)
                             / 1024
                         )
-                        pbar.set_postfix({"avg_speed": "{:.2f} KB/s".format(avg_speed)})
+                        pbar.set_postfix(
+                            {"avg_speed": "{:.2f} KB/s".format(avg_speed)})
         super_duper_logger(f"Downloaded {filename} to {path}", "DOWNLOADER")
     return filename
 
@@ -181,7 +180,8 @@ def pls_run_thrgh(smth=None, **kwargs):
         except requests.exceptions.ConnectionError:
             sys.exit("ну всё, допинговался и умир")
         except Exception as error:
-            traceback.print_exception(type(error), error, error.__traceback__, limit=1)
+            traceback.print_exception(
+                type(error), error, error.__traceback__, limit=1)
             # print(error)
             attempts += 1
             # bruh why
