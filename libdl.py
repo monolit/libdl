@@ -31,6 +31,19 @@ def ensure_directory_exists(directory_path):
         print(f"Created directory {directory_path}")
 
 
+def get_name(url):
+    name = url.rstrip('/')
+    for delimiter, index in [
+        ['/', -1], 
+        ['&', 0], 
+        ['?', 0]]:
+        name = name.split(delimiter)[index]
+    name = unquote(name)
+    for letter in ['/', '\\']:
+        name = name.replace(letter, '_')
+    return name
+
+
 def download(
     url, path=os.getcwd(), recreate=False, _quiet=False, filename=None, headers=None
 ):
@@ -58,7 +71,7 @@ def download(
         headers = {}
     ensure_directory_exists(path)
     if not filename:
-        filename = unquote(url.split("?")[0].rstrip("/").split("/")[-1])
+        filename = get_name(url)
     filepath = os.path.join(path, filename)
     server_bytes = int(
         requests.head(url, timeout=7, headers=headers).headers.get("Content-Length")
