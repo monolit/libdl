@@ -1,6 +1,7 @@
 import requests
 import argparse
 import sys
+
 # import tqdm
 from tqdm.rich import trange
 import time
@@ -46,11 +47,11 @@ def get_name(url):
 
 
 def humanize_size(size):
-    for unit in ['bytes', 'KB', 'MB', 'GB']:
+    for unit in ["bytes", "KB", "MB", "GB"]:
         if size < 1024.0:
-            return f'{size:.1f} {unit}'
+            return f"{size:.1f} {unit}"
         size /= 1024.0
-    return f'{size:.1f} TB'
+    return f"{size:.1f} TB"
 
 
 def download(
@@ -105,15 +106,18 @@ def download(
         else:
             super_duper_logger(
                 f"""{filename} error but you can try:
-                local {local_bytes} not server {server_bytes}""")
+                local {local_bytes} not server {server_bytes}"""
+            )
             # raise NotImplementedError
-            return None # filename
+            return None  # filename
     else:
         local_bytes = 0
         filemode = "wb"
     need_bytes = server_bytes - local_bytes
     # with tqdm.tqdm(server_bytes, unit="B", unit_divisor=1024, unit_scale=True, ncols=100) as pbar:
-    with trange(server_bytes, unit="B", unit_divisor=1024, unit_scale=True, ncols=1000) as pbar:
+    with trange(
+        server_bytes, unit="B", unit_divisor=1024, unit_scale=True, ncols=1000
+    ) as pbar:
         pbar.update(local_bytes)
         pbar.set_description(f"{filename}")
         start_time = time.time()
@@ -130,7 +134,8 @@ def download(
                     if downloaded_size >= need_bytes:
                         super_duper_logger(
                             f"Skipping as already complete:\
-                            local {local_bytes + downloaded_size} and server {server_bytes}")
+                            local {local_bytes + downloaded_size} and server {server_bytes}"
+                        )
                         return filename
                     current_time = time.time()
                     elapsed_time = current_time - start_time
@@ -149,8 +154,8 @@ def download(
                         avg_speeds.append((download_speed, current_time))
                     if avg_speeds:
                         avg_speed = round(
-                            sum(speed for speed, _ in avg_speeds)
-                            / len(avg_speeds)
+                            sum(speed for speed, _ in avg_speeds) /
+                            len(avg_speeds)
                         )
                         pbar.set_postfix(
                             {"avg_speed": humanize_size(avg_speed) + "/s"})
