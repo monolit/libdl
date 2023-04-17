@@ -134,7 +134,8 @@ def download(
                     if downloaded_size >= need_bytes:
                         super_duper_logger(
                             f"Skipping as already complete:\
-                            local {local_bytes + downloaded_size} and server {server_bytes}"
+                            local {local_bytes + downloaded_size} \
+                            and server {server_bytes}"
                         )
                         return filename
                     current_time = time.time()
