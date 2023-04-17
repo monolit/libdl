@@ -1,12 +1,16 @@
 import requests
 import argparse
 import sys
-import tqdm
+# import tqdm
+from tqdm.rich import trange
 import time
 import os
 import datetime
 import traceback
 from urllib.parse import unquote
+import warnings
+
+warnings.filterwarnings("ignore")
 
 CHUNK_SIZE = 1024 * 1024  # 1024KB
 AVERAGE_SPEED_WINDOW = 5  # window size to calculate average download speed in seconds
@@ -14,7 +18,7 @@ AVERAGE_SPEED_WINDOW = 5  # window size to calculate average download speed in s
 # https://github.com/kiriharu/zerochan/blob/main/zerochan/__main__.py#L26
 
 
-def super_duper_logger(text: str, level: str):
+def super_duper_logger(text: str, level="FILEINFO"):
     """This is my secret development, shh!"""
     print(f"[{datetime.datetime.now()}] [{level}]: {text}")
 
@@ -39,6 +43,14 @@ def get_name(url):
     for letter in ["/", "\\"]:
         name = name.replace(letter, "_")
     return name
+
+
+def humanize_size(size):
+    for unit in ['bytes', 'KB', 'MB', 'GB']:
+        if size < 1024.0:
+            return f'{size:.1f} {unit}'
+        size /= 1024.0
+    return f'{size:.1f} TB'
 
 
 def download(
@@ -75,30 +87,39 @@ def download(
             "Content-Length")
     )
 
-    with tqdm.tqdm(total=server_bytes, unit="B", unit_scale=True, ncols=100) as pbar:
-        pbar.set_description(f"Downloading {filename}")
+    if os.path.exists(filepath):
+        local_bytes = os.path.getsize(filepath)
+        if local_bytes < server_bytes:
+            # resume download from the last byte
+            headers["Range"] = f"bytes={local_bytes}-"
+            filemode = "ab"
+            super_duper_logger(
+                f"Resuming download! {filename} from {humanize_size(local_bytes)} to {humanize_size(server_bytes)}"
+            )
+        elif recreate:
+            super_duper_logger({"status": "recreating file"})
+            filemode = "wb"
+        elif local_bytes == server_bytes:
+            super_duper_logger({"status": "Skipping as already complete"})
+            return filename
+        else:
+            super_duper_logger(
+                f"""{filename} error but you can try:
+                local {local_bytes} not server {server_bytes}""")
+            # raise NotImplementedError
+            return None # filename
+    else:
+        local_bytes = 0
+        filemode = "wb"
+    need_bytes = server_bytes - local_bytes
+    # with tqdm.tqdm(server_bytes, unit="B", unit_divisor=1024, unit_scale=True, ncols=100) as pbar:
+    with trange(server_bytes, unit="B", unit_divisor=1024, unit_scale=True, ncols=1000) as pbar:
+        pbar.update(local_bytes)
+        pbar.set_description(f"{filename}")
         start_time = time.time()
         downloaded_size = 0
         avg_speeds = []
-        if os.path.exists(filepath):
-            local_bytes = os.path.getsize(filepath)
-            if local_bytes < server_bytes:
-                # resume download from the last byte
-                headers["Range"] = f"bytes={local_bytes}-"
-                filemode = "ab"
-                pbar.update(local_bytes)
-                super_duper_logger(
-                    f"Resuming download! {filename} from {round(local_bytes / 1024)}kb to {round(server_bytes / 1024)}kb",
-                    "FILEINFO",
-                )
-            elif recreate:
-                pbar.set_postfix({"status": "recreating file"})
-                filemode = "wb"
-            else:
-                pbar.set_postfix({"status": "Skipping as already complete"})
-                return filename
-        else:
-            filemode = "wb"
+
         with requests.get(url, headers=headers, stream=True) as r:
             r.raise_for_status()
             with open(filepath, filemode) as f:
@@ -106,20 +127,14 @@ def download(
                     f.write(chunk)
                     pbar.update(len(chunk))
                     downloaded_size += len(chunk)
+                    if downloaded_size >= need_bytes:
+                        super_duper_logger(
+                            f"Skipping as already complete:\
+                            local {local_bytes + downloaded_size} and server {server_bytes}")
+                        return filename
                     current_time = time.time()
                     elapsed_time = current_time - start_time
                     download_speed = downloaded_size / elapsed_time
-                    pbar.set_postfix(
-                        {
-                            "speed": "{:.2f} B/s".format(download_speed),
-                            "time_left": str(
-                                datetime.timedelta(
-                                    seconds=(server_bytes - downloaded_size)
-                                    / download_speed
-                                )
-                            ),
-                        }
-                    )
                     if (
                         len(avg_speeds) == 0
                         or current_time - AVERAGE_SPEED_WINDOW < avg_speeds[-1][1]
@@ -136,10 +151,9 @@ def download(
                         avg_speed = round(
                             sum(speed for speed, _ in avg_speeds)
                             / len(avg_speeds)
-                            / 1024
                         )
                         pbar.set_postfix(
-                            {"avg_speed": "{:.2f} KB/s".format(avg_speed)})
+                            {"avg_speed": humanize_size(avg_speed) + "/s"})
         super_duper_logger(f"Downloaded {filename} to {path}", "DOWNLOADER")
     return filename
 
