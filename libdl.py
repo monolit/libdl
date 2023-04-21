@@ -85,9 +85,8 @@ def download(
     filepath = os.path.join(path, filename)
     try:
         server_bytes = int(
-        requests.head(url, timeout=7, headers=headers).headers.get(
-            "Content-Length")
-    )
+            requests.head(url, timeout=7, headers=headers).headers.get("Content-Length")
+        )
     except TypeError:
         server_bytes = None
     if os.path.exists(filepath):
@@ -121,7 +120,11 @@ def download(
         need_bytes = None
     # with tqdm.tqdm(server_bytes, unit="B", unit_divisor=1024, unit_scale=True, ncols=100) as pbar:
     with trange(
-        server_bytes if server_bytes else 0, unit="B", unit_divisor=1024, unit_scale=True, ncols=1000
+        server_bytes if server_bytes else 0,
+        unit="B",
+        unit_divisor=1024,
+        unit_scale=True,
+        ncols=1000,
     ) as pbar:
         pbar.update(local_bytes)
         pbar.set_description(f"{filename}")
@@ -160,11 +163,9 @@ def download(
                         avg_speeds.append((download_speed, current_time))
                     if avg_speeds:
                         avg_speed = round(
-                            sum(speed for speed, _ in avg_speeds) /
-                            len(avg_speeds)
+                            sum(speed for speed, _ in avg_speeds) / len(avg_speeds)
                         )
-                        pbar.set_postfix(
-                            {"avg_speed": humanize_size(avg_speed) + "/s"})
+                        pbar.set_postfix({"avg_speed": humanize_size(avg_speed) + "/s"})
         super_duper_logger(f"Downloaded {filename} to {path}", "DOWNLOADER")
     return filename
 
@@ -205,8 +206,7 @@ def pls_run_thrgh(smth=None, **kwargs):
         except requests.exceptions.ConnectionError:
             sys.exit("ну всё, допинговался и умир")
         except Exception as error:
-            traceback.print_exception(
-                type(error), error, error.__traceback__, limit=1)
+            traceback.print_exception(type(error), error, error.__traceback__, limit=1)
             # print(error)
             attempts += 1
             # bruh why
