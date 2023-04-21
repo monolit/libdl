@@ -83,14 +83,16 @@ def download(
     if not filename:
         filename = get_name(url)
     filepath = os.path.join(path, filename)
-    server_bytes = int(
+    try:
+        server_bytes = int(
         requests.head(url, timeout=7, headers=headers).headers.get(
             "Content-Length")
     )
-
+    except TypeError:
+        server_bytes = None
     if os.path.exists(filepath):
         local_bytes = os.path.getsize(filepath)
-        if local_bytes < server_bytes:
+        if server_bytes and (local_bytes < server_bytes):
             # resume download from the last byte
             headers["Range"] = f"bytes={local_bytes}-"
             filemode = "ab"
@@ -109,14 +111,17 @@ def download(
                 local {local_bytes} not server {server_bytes}"""
             )
             # raise NotImplementedError
-            return None  # filename
+            # return None  # filename
     else:
         local_bytes = 0
         filemode = "wb"
-    need_bytes = server_bytes - local_bytes
+    if server_bytes:
+        need_bytes = server_bytes - local_bytes
+    else:
+        need_bytes = None
     # with tqdm.tqdm(server_bytes, unit="B", unit_divisor=1024, unit_scale=True, ncols=100) as pbar:
     with trange(
-        server_bytes, unit="B", unit_divisor=1024, unit_scale=True, ncols=1000
+        server_bytes if server_bytes else 0, unit="B", unit_divisor=1024, unit_scale=True, ncols=1000
     ) as pbar:
         pbar.update(local_bytes)
         pbar.set_description(f"{filename}")
@@ -131,7 +136,7 @@ def download(
                     f.write(chunk)
                     pbar.update(len(chunk))
                     downloaded_size += len(chunk)
-                    if downloaded_size >= need_bytes:
+                    if server_bytes and (downloaded_size >= need_bytes):
                         super_duper_logger(
                             f"Skipping as already complete:\
                             local {local_bytes + downloaded_size} \
