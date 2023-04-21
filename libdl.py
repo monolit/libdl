@@ -109,6 +109,7 @@ def download(
                 f"""{filename} error but you can try:
                 local {local_bytes} not server {server_bytes}"""
             )
+            filemode = "ab" # 💀
             # raise NotImplementedError
             # return None  # filename
     else:
