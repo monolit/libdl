@@ -86,7 +86,9 @@ def download(
     filepath = os.path.join(path, filename)
     try:
         server_bytes = int(
-            requests.head(url, timeout=7, headers=headers, verify=VERIFY).headers.get("Content-Length")
+            requests.head(url, timeout=7, headers=headers, verify=VERIFY).headers.get(
+                "Content-Length"
+            )
         )
     except TypeError:
         server_bytes = None
