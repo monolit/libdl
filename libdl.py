@@ -187,7 +187,7 @@ def pls_run_thrgh(smth=None, **kwargs):
         "url",
         nargs="*",
         default=[smth],
-        help="may be string with spaces, e. g. url1 url2",
+        help="may be string with spaces, e. g. url1 url2 OR TXT FILE",
     )
     args = parser.parse_args()
     # hardcoded because fuck you
@@ -198,12 +198,19 @@ def pls_run_thrgh(smth=None, **kwargs):
             for url in args.url:
                 if url is not None:
                     print(url)
-                    if not (l := kwargs.get("path")):
+                    if not (ll := kwargs.get("path")):
                         path = os.getcwd()
                     else:
-                        path = l
+                        path = ll
                         del kwargs["path"]
-                    download(url, path=path, **kwargs)
+                    # trying feature
+                    if ".txt" in url:
+                        urls = open(url).read().split("\n")
+                    else:
+                        urls = [url]
+                    for uu in urls:
+                        print(uu)
+                        download(uu, path=path, **kwargs)
                 # future fails
                 attempts = 1
             break
