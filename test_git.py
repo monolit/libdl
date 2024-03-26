@@ -35,7 +35,8 @@ def GetGitVersion():
             branchOrTag = allTagsArray[0]
     else:
         # add the head commit id on the current branch
-        branchOrTag = "{}[{}]".format(branchOrTag, git.rev_parse("--short", "HEAD"))
+        branchOrTag = "{}[{}]".format(
+            branchOrTag, git.rev_parse("--short", "HEAD"))
 
     return branchOrTag
 
