@@ -1,15 +1,15 @@
-import requests
 import argparse
+import datetime
+import os
 import sys
+import time
+import traceback
+import warnings
+from urllib.parse import unquote
 
+import requests
 # import tqdm
 from tqdm.rich import trange
-import time
-import os
-import datetime
-import traceback
-from urllib.parse import unquote
-import warnings
 
 warnings.filterwarnings("ignore")
 
@@ -167,9 +167,11 @@ def download(
                         avg_speeds.append((download_speed, current_time))
                     if avg_speeds:
                         avg_speed = round(
-                            sum(speed for speed, _ in avg_speeds) / len(avg_speeds)
+                            sum(speed for speed, _ in avg_speeds) /
+                            len(avg_speeds)
                         )
-                        pbar.set_postfix({"avg_speed": humanize_size(avg_speed) + "/s"})
+                        pbar.set_postfix(
+                            {"avg_speed": humanize_size(avg_speed) + "/s"})
         super_duper_logger(f"Downloaded {filename} to {path}", "DOWNLOADER")
     return filename
 
@@ -217,7 +219,8 @@ def pls_run_thrgh(smth=None, **kwargs):
         except requests.exceptions.ConnectionError:
             sys.exit("ну всё, допинговался и умир")
         except Exception as error:
-            traceback.print_exception(type(error), error, error.__traceback__, limit=1)
+            traceback.print_exception(
+                type(error), error, error.__traceback__, limit=1)
             # print(error)
             attempts += 1
             # bruh why
