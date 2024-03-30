@@ -1,7 +1,6 @@
 import http.server
-import socketserver
 import os
-
+import socketserver
 
 filepath = "testfile1GB"
 PORT = 8000

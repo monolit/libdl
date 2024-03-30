@@ -1,9 +1,11 @@
-from libdl import pls_run_thrgh, download
 import sys
+
+from libdl import download, pls_run_thrgh
 
 
 def local_file():
     from threading import Thread
+
     from serve import main as s
 
     server = Thread(target=s, args=())
