@@ -16,6 +16,7 @@ warnings.filterwarnings("ignore")
 CHUNK_SIZE = 1024 * 1024  # 1024KB
 AVERAGE_SPEED_WINDOW = 5  # window size to calculate average download speed in seconds
 VERIFY = False
+TIMEOUT = 7
 
 # https://github.com/kiriharu/zerochan/blob/main/zerochan/__main__.py#L26
 
@@ -86,7 +87,7 @@ def download(
     filepath = os.path.join(path, filename)
     try:
         server_bytes = int(
-            requests.head(url, timeout=7, headers=headers, verify=VERIFY).headers.get(
+            requests.head(url, timeout=TIMEOUT, headers=headers, verify=VERIFY).headers.get(
                 "Content-Length"
             )
         )
