@@ -29,6 +29,7 @@ setup(
         "requests",
         "tqdm",
         "datetime",
+        "rich",
     ],
     entry_points={
         "console_scripts": ["libdl=libdl:pls_run_thrgh"],
