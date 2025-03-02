@@ -217,7 +217,7 @@ def pls_run_thrgh(smth=None, **kwargs):
                         HEADERS = {
                             "Referer": uu.rsplit("/", maxsplit=1)[0],
                             "user-agent": USERAGENT,
-                            }
+                        }
                         download(uu, path=path, headers=HEADERS, **kwargs)
                 # future fails
                 attempts = 1
