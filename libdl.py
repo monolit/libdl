@@ -17,6 +17,7 @@ CHUNK_SIZE = 1024 * 1024  # 1024KB
 AVERAGE_SPEED_WINDOW = 5  # window size to calculate average download speed in seconds
 VERIFY = False
 TIMEOUT = 7
+USERAGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
 
 # https://github.com/kiriharu/zerochan/blob/main/zerochan/__main__.py#L26
 
@@ -213,7 +214,11 @@ def pls_run_thrgh(smth=None, **kwargs):
                         urls = [url]
                     for uu in urls:
                         print(uu)
-                        download(uu, path=path, **kwargs)
+                        HEADERS = {
+                            "Referer": uu.rsplit("/", maxsplit=1)[0],
+                            "user-agent": USERAGENT,
+                            }
+                        download(uu, path=path, headers=HEADERS, **kwargs)
                 # future fails
                 attempts = 1
             break
