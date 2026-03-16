@@ -208,7 +208,7 @@ def pls_run_thrgh(smth=None, **kwargs):
                         path = ll
                         del kwargs["path"]
                     # trying feature
-                    if ".txt" in url:
+                    if ".txt" in url and not url.startswith("http"):
                         urls = open(url).read().split("\n")
                     else:
                         urls = [url]
